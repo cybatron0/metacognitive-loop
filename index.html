@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Metacognitive Loop</title>
+  <style>
+    :root {
+      --bg: #0c0c0c;
+      --surface: #161616;
+      --border: #2a2a2a;
+      --text: #e8e8e8;
+      --muted: #888;
+      --accent: #7dd3fc;
+      --supported: #4ade80;
+      --partial: #fbbf24;
+      --open: #f87171;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      padding: 2rem 1.25rem 4rem;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.35rem;
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 2.5rem;
+    }
+    .steering {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      padding: 1.1rem 1.25rem;
+      margin-bottom: 2.5rem;
+      border-radius: 6px;
+    }
+    .steering label {
+      display: block;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+    .steering p {
+      font-size: 1.05rem;
+      font-weight: 500;
+    }
+    .entry {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.35rem 1.4rem;
+      margin-bottom: 1.25rem;
+    }
+    .entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+    }
+    .entry-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+    .status {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .status.supported { background: rgba(74,222,128,0.15); color: var(--supported); }
+    .status.partial { background: rgba(251,191,36,0.15); color: var(--partial); }
+    .status.open { background: rgba(248,113,113,0.15); color: var(--open); }
+    .meta-row {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 0.9rem;
+    }
+    .section {
+      margin-top: 1rem;
+    }
+    .section h3 {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      margin-bottom: 0.35rem;
+    }
+    .section p, .section li {
+      font-size: 0.92rem;
+    }
+    ul {
+      padding-left: 1.1rem;
+    }
+    li { margin-bottom: 0.25rem; }
+    .idea {
+      color: #ccc;
+      font-size: 0.95rem;
+    }
+    footer {
+      margin-top: 3rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      padding-top: 1.25rem;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <h1>Metacognitive Loop</h1>
+  <p class="subtitle">Dual-layer research steering · Object + Meta</p>
+
+  <div class="steering" id="steering">
+    <label>Current top steering signal</label>
+    <p id="steering-text">Loading…</p>
+  </div>
+
+  <div id="entries"></div>
+
+  <footer>
+    Schema inspired by Sage-Taiyi (arXiv:2611.12762).<br>
+    <a href="https://github.com/cybatron0/metacognitive-loop">Source</a>
+  </footer>
+
+  <script>
+    async function load() {
+      const res = await fetch('./entries.json');
+      const entries = await res.json();
+
+      // Simple scoring for top steering signal
+      const scored = entries.map(e => {
+        let score = e.meta_level.confidence;
+        if (e.object_level.evidence_status === 'open') score += 0.15;
+        if (e.object_level.evidence_status === 'partial') score += 0.10;
+        if (e.object_level.evidence_status === 'contested') score += 0.05;
+        return { entry: e, score };
+      }).sort((a, b) => b.score - a.score);
+
+      document.getElementById('steering-text').textContent =
+        scored[0]?.entry.meta_level.steering_signal || 'No entries';
+
+      const container = document.getElementById('entries');
+      entries.forEach(e => {
+        const statusClass = e.object_level.evidence_status;
+        const el = document.createElement('article');
+        el.className = 'entry';
+        el.innerHTML = `
+          <div class="entry-header">
+            <div class="entry-title">${e.source.title}</div>
+            <span class="status ${statusClass}">${e.object_level.evidence_status}</span>
+          </div>
+          <div class="meta-row">${e.source.date} · ${e.source.type} · confidence ${e.meta_level.confidence}</div>
+          <div class="section">
+            <h3>Target</h3>
+            <p>${e.object_level.target}</p>
+          </div>
+          <div class="section">
+            <h3>Core idea</h3>
+            <p class="idea">${e.object_level.idea_summary}</p>
+          </div>
+          <div class="section">
+            <h3>Key evidence</h3>
+            <ul>${e.object_level.key_evidence.map(x => `<li>${x}</li>`).join('')}</ul>
+          </div>
+          <div class="section">
+            <h3>Active assumptions</h3>
+            <ul>${e.meta_level.active_assumptions.map(x => `<li>${x}</li>`).join('')}</ul>
+          </div>
+          <div class="section">
+            <h3>Unresolved questions</h3>
+            <ul>${e.meta_level.unresolved_questions.map(x => `<li>${x}</li>`).join('')}</ul>
+          </div>
+          <div class="section">
+            <h3>Steering signal</h3>
+            <p>${e.meta_level.steering_signal}</p>
+          </div>
+        `;
+        container.appendChild(el);
+      });
+    }
+    load().catch(err => {
+      document.getElementById('steering-text').textContent = 'Failed to load entries.';
+      console.error(err);
+    });
+  </script>
+</body>
+</html>

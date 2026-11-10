@@ -1,0 +1,118 @@
+[
+  {
+    "entry_id": "sage-taiyi-2026-11-09",
+    "source": {
+      "title": "Sage-Taiyi: A Metacognitive Architecture for Scientific Discovery",
+      "url_or_doi": "arXiv:2611.12762",
+      "date": "2026-11-09",
+      "type": "paper"
+    },
+    "object_level": {
+      "target": "Build an AI system that decides what to investigate next by continuously revising its own model of evidence, assumptions, and open questions.",
+      "idea_summary": "Explicit dual-layer architecture: object-level search (Target Tree + Idea Graph) regulated by a meta-level that monitors and updates scientific understanding, then steers both targets and reusable reasoning methods.",
+      "evidence_status": "supported",
+      "key_evidence": [
+        "Leads all eight metrics on Taiyi-Bench (265 tasks, 50 papers, 10 disciplines); overall 54.0 vs 47.9 for AI Scientist-v2",
+        "Raised cobalt-catalyzed carbonylation yield from trace to 84% and photocatalytic allylic amination from 13% to 69% in expert-guided wet-lab collaborations"
+      ]
+    },
+    "meta_level": {
+      "active_assumptions": [
+        "Metacognitive regulation (monitoring + control of one's own understanding) is a necessary component for effective long-horizon scientific search",
+        "Reusable methodological heuristics can be explicitly selected and applied"
+      ],
+      "unresolved_questions": [
+        "How well does the metacognitive loop scale when the experimental feedback loop is fully autonomous rather than expert-guided?",
+        "What is the minimal set of cognitive operators required for robust performance across domains?"
+      ],
+      "confidence": 0.82,
+      "steering_signal": "Implement a lightweight version of the monitoring-control loop inside the knowledge synthesizer so every ingested item produces an explicit steering recommendation rather than only a summary."
+    },
+    "links": {
+      "related_entries": [],
+      "downstream_actions": [
+        "Prototype the three meta fields (assumptions, unresolved questions, steering_signal) as required schema on every new research entry",
+        "Test the loop on the next 10 papers ingested for ChemLab or energy work"
+      ]
+    },
+    "timestamp": "2026-11-11T00:50:00Z"
+  },
+  {
+    "entry_id": "autodna-2026-11-04",
+    "source": {
+      "title": "An AI-native experimental laboratory for autonomous biomolecular operations",
+      "url_or_doi": "https://doi.org/10.1038/s41586-026-11228-6",
+      "date": "2026-11-04",
+      "type": "paper"
+    },
+    "object_level": {
+      "target": "Create a laboratory system that can plan and execute complex multi-instrument biomolecular workflows from a high-level goal with minimal human intervention.",
+      "idea_summary": "Multi-agent architecture (Planner, Protocol, Reagent, Code, Hardware) co-designed with the physical instruments from the start; orchestrates >20 instrument types across >11,000 steps while humans only restock and maintain hardware.",
+      "evidence_status": "supported",
+      "key_evidence": [
+        "Matched expert enzymatic DNA synthesis yields",
+        "3.2× acceleration via concurrent protocol execution",
+        "Completed end-to-end DNA data storage with exact recovery and identified/validated a clinical KRAS G13D mutation"
+      ]
+    },
+    "meta_level": {
+      "active_assumptions": [
+        "Co-design of models, experiments, and instruments is superior to retrofitting agents onto human-centric lab layouts",
+        "Current multi-agent orchestration is sufficient for nucleic-acid workflows of moderate complexity"
+      ],
+      "unresolved_questions": [
+        "How does performance and reliability degrade when the chemical/biological space becomes less standardized?",
+        "What failure modes appear when the system must handle novel instruments or protocols not seen during development?"
+      ],
+      "confidence": 0.78,
+      "steering_signal": "If ChemLab moves toward closed-loop or simulated experimentation, adopt the multi-agent separation (especially explicit Protocol and Hardware agents with self-correction) rather than a single monolithic controller."
+    },
+    "links": {
+      "related_entries": ["sage-taiyi-2026-11-09"],
+      "downstream_actions": [
+        "Map AutoDNA agent roles onto any future ChemLab automation layer",
+        "Note the human boundary (restocking + maintenance only) as the current practical limit"
+      ]
+    },
+    "timestamp": "2026-11-11T00:50:00Z"
+  },
+  {
+    "entry_id": "pppl-ignition-2026-10",
+    "source": {
+      "title": "Generalized Lawson-Cordey-Mills accessibility of fusion ignition",
+      "url_or_doi": "Physical Review Letters 137, 115102 (2026)",
+      "date": "2026-10",
+      "type": "paper"
+    },
+    "object_level": {
+      "target": "Determine the lowest-energy route to a self-heating (ignited) fusion plasma under realistic conditions.",
+      "idea_summary": "Unified power-balance framework shows the most efficient path is heat the plasma first, then increase density. Trace tungsten and synchrotron radiation significantly raise the required pressure.",
+      "evidence_status": "supported",
+      "key_evidence": [
+        "Heat-first, density-second path requires substantially less external energy than the reverse sequence common in many designs",
+        "Tungsten at 10⁻⁴ concentration approximately doubles ignition pressure requirement",
+        "Framework incorporates fuel dilution, helium ash, impurities, and synchrotron losses"
+      ]
+    },
+    "meta_level": {
+      "active_assumptions": [
+        "The modified Lawson criterion plus the four additional accessibility conditions adequately capture the dominant physics",
+        "Current materials choices (especially tungsten) will remain relevant for next-generation devices"
+      ],
+      "unresolved_questions": [
+        "How sensitive is the optimal path to improvements in confinement or the use of spin-polarized fuel?",
+        "What is the practical engineering cost of implementing lithium-coated walls or other mitigations at scale?"
+      ],
+      "confidence": 0.75,
+      "steering_signal": "For any energy-systems tracking or Kardashev-related work, treat the heat-first pathway and impurity sensitivity as updated baseline constraints rather than older ideal Lawson numbers."
+    },
+    "links": {
+      "related_entries": [],
+      "downstream_actions": [
+        "Update internal energy-system notes with the heat-first principle and tungsten warning",
+        "Flag lithium-wall and spin-polarized fuel concepts for later monitoring"
+      ]
+    },
+    "timestamp": "2026-11-11T00:50:00Z"
+  }
+]
